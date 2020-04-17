@@ -21,7 +21,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     super.viewDidLoad()
 
     imagePicker.delegate = self
-    imagePicker.sourceType = .camera
+    imagePicker.sourceType = .photoLibrary
     imagePicker.allowsEditing = false // normally true
   }
   
@@ -33,7 +33,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
       
       guard let ciimage = CIImage(image: userPickedImage) else {
         
-        fatalError("Error: could not conver to CIImage")
+        fatalError("Error: could not convert to CIImage")
       }
       
     }
@@ -45,8 +45,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   
   
   func detect(image: CIImage){
-    
-    let model = VNCoreMLModel(for: Inceptionv3().model)
+   // VNCoreMLModel is part of Vision Framework -> image analys
+      guard let model = try? VNCoreMLModel(for: Inceptionv3().model) else{
+        fatalError("Error: Loading CoreML failed")
+      }
+    let request = VNCoreMLRequest(model: model) { (request, error) in
+      guard let results = request.results as? [VNClassificationObservation] else{
+        fatalError("Error: Model failed to process image")
+      }
+    }
     
   }
   
