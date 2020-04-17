@@ -21,7 +21,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     super.viewDidLoad()
 
     imagePicker.delegate = self
-    imagePicker.sourceType = .photoLibrary
+    imagePicker.sourceType = .camera
     imagePicker.allowsEditing = false // normally true
   }
   
@@ -54,6 +54,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     let request = VNCoreMLRequest(model: model) { (request, error) in
       guard let results = request.results as? [VNClassificationObservation] else{
         fatalError("Error: Model failed to process image")
+      }
+      
+      if let firstResult = results.first{
+        print("RESULT: ",firstResult.identifier)
+        if firstResult.identifier.contains("hotdog"){
+          self.navigationItem.title = "It is a Hot Dog"
+          UINavigationBar.appearance().barTintColor = UIColor(red: 0.0/255.0, green: 204.0/255.0, blue: 102.0/255.0, alpha: 1.0)
+
+
+        }else{
+          self.navigationItem.title = "Nah, \(firstResult.identifier)"
+            UINavigationBar.appearance().barTintColor = UIColor(red: 234.0/255.0, green: 46.0/255.0, blue: 73.0/255.0, alpha: 1.0)
+        }
       }
       print(results)
     }
