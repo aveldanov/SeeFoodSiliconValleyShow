@@ -44,9 +44,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   }
   
   
-  func detect(image){
+  func detect(image: CIImage){
     
-    
+    let model = VNCoreMLModel(for: Inceptionv3().model)
     
   }
   
