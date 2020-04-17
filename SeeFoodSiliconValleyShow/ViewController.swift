@@ -29,12 +29,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     if let userPickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
       imageView.image = userPickedImage
+      
+      
+      guard let ciimage = CIImage(image: userPickedImage) else {
+        
+        fatalError("Error: could not conver to CIImage")
+      }
+      
     }
     
     imagePicker.dismiss(animated: true, completion: nil)
     
     
   }
+  
+  
+  func detect(image){
+    
+    
+    
+  }
+  
+  
+  
+  
 
   @IBAction func cameraTapped(_ sender: UIBarButtonItem) {
     
